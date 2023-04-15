@@ -19,9 +19,9 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*', 'https://crm.psillovits.com', 'http://crm.psillovits.com'],
+    'allowed_origins' => ['*'],
 
-    'allowed_origins_patterns' => ['/https?:\/\/crm.psillovits\.com\/?\z/'],
+    'allowed_origins_patterns' => [],
 
     'allowed_headers' => ['*'],
 
