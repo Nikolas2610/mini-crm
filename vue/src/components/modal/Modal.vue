@@ -31,17 +31,18 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { onClickOutside } from '@vueuse/core'
+// Components import
 import Container from '../wrappers/Container.vue';
 import Flex from '../wrappers/Flex.vue';
 
+// Variables
 const emit = defineEmits(['closeModal']);
-
 const props = defineProps<{
     modalOpen: Boolean
 }>()
-
 const modal = ref(null)
 
+// Vueuse function
 onClickOutside(modal, () => {
     emit('closeModal')
 })

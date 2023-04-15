@@ -25,7 +25,8 @@
                         </div>
                         <!-- Submit Form -->
                         <Flex>
-                            <Button type="submit" width="full" bg-color="black">Login</Button>
+                            <Button :loading="userStore.login.loading" type="submit" width="full" bg-color="black"
+                                :disable="userStore.disableLogin">Login</Button>
                         </Flex>
                     </form>
                 </div>
@@ -35,14 +36,16 @@
 </template>
 
 <script setup lang="ts">
-import Container from '../components/wrappers/Container.vue';
-import Flex from '../components/wrappers/Flex.vue';
 import { useUserStore } from '../stores/UserStore'
 import { required, email } from '@vuelidate/validators';
 import { useVuelidate } from '@vuelidate/core'
-import { computed } from 'vue';
+import { computed, onBeforeMount } from 'vue';
+// Components imports
+import Container from '../components/wrappers/Container.vue';
+import Flex from '../components/wrappers/Flex.vue';
 import InputField from '../components/ui/InputField.vue';
 import Button from '../components/ui/Button.vue';
+import router from '../router';
 
 const userStore = useUserStore();
 
@@ -59,19 +62,17 @@ const rules = computed(() => {
 const v$ = useVuelidate(rules, userStore.login.form);
 
 const login = async () => {
-    // Set Loading Button 
-    userStore.login.loading = true;
     // Validate Form 
     await v$.value.$validate()
-
     // Check for error forms
     if (!v$.value.$error) {
         // Success Form
-        console.log('Success')
-    } else {
-        console.log('Form error')
+        userStore._login();
     }
-    // Disable loading button
-    userStore.login.loading = false;
 }
+
+onBeforeMount(() => {
+    // if user is log redirect to clients
+    if (userStore.isUserLog) router.push({ name: 'clients' })
+})
 </script>

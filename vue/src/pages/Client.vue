@@ -17,46 +17,44 @@
 
         <ClientForm @submit="client?.id ? clientStore._updateClient(client.id) : ''" class="mt-10">
             <Flex class="mt-8">
-                <Button type="submit" width="full">Update Client</Button>
+                <Button :loading="clientStore.newClient.loading" type="submit" width="full" :disable="clientStore.disableSubmit">Update Client</Button>
             </Flex>
         </ClientForm>
-
     </Container>
 
-    <Transactions :select-disable="true" />
+    <!-- Load client transactions -->
+    <Transactions :select-disable="true" :client="{ id: client?.id }" :full-height="false" />
 </template>
 
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router';
 import { useClientStore } from '../stores/ClientStore';
-import { onMounted, onUnmounted, ref } from 'vue';
+import { onBeforeMount, ref } from 'vue';
+import { useTransactionStore } from '../stores/TransactionStore';
+import type Client from '../types/Client';
+// Components imports
 import Container from '../components/wrappers/Container.vue';
 import Flex from '../components/wrappers/Flex.vue';
 import Button from '../components/ui/Button.vue';
-import type Client from '../types/Client';
 import ClientForm from '../components/forms/ClientForm.vue';
 import Transactions from './Transactions.vue';
-import { useTransactionStore } from '../stores/TransactionStore';
 
+// Variables
 const router = useRouter()
 const route = useRoute();
 const clientStore = useClientStore();
 const transactionStore = useTransactionStore()
 const client = ref<Client | null>(null);
 
-onMounted(() => {
+onBeforeMount(() => {
     // Get client
     const clientId = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id;
-    client.value = clientStore._getClient(parseInt(clientId)) ?? null;
+    client.value = clientStore.getClient(parseInt(clientId)) ?? null;
     // If is null redirect to clients
     if (!client.value) {
         router.push({ name: 'clients' })
     }
-    transactionStore.newTransaction.form.clientId = client.value?.id ?? null
+    // Set the client id for the client edit
+    transactionStore.newTransaction.form.client_id = client.value?.id ?? null
 })
-
-onUnmounted(() => {
-    clientStore.eraseForm();
-})
-
 </script>

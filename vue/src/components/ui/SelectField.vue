@@ -34,9 +34,6 @@ const props = defineProps({
     emptyValue: { type: Boolean, default: true }
 });
 
-console.log(props.input);
-
-
 const emits = defineEmits(['update'])
 const selectValue = ref();
 if (props.input) {
