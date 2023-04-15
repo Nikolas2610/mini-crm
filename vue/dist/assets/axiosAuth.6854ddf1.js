@@ -1,0 +1,1 @@
+import{u as t,W as r}from"./index.af2ffd6f.js";const s=t(),a=r.create({baseURL:"http://localhost:8000/api",headers:{"Content-Type":"application/json"}});a.interceptors.request.use(e=>(e.headers=e.headers||{},e.headers.Authorization=`Bearer ${s.getToken}`,e));export{a};
