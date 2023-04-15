@@ -8,7 +8,8 @@
             </Flex>
             <div v-if="!transactionsStore.loading">
                 <!-- Table -->
-                <DarkTable :table-headers="tableHeaders" :actions="true" v-if="transactionsStore.transactions.length > 0">
+                <DarkTable :table-headers="tableHeaders" :actions="true" v-if="transactionsStore.transactions.length > 0"
+                    :pagination="transactionsStore.pagination" @on-page-change="(value: number) => onPageChange(value)">
                     <DarkTableRow v-for="transaction in transactionsStore.transactions" :key="transaction.id">
                         <DarkTableCell>
                             {{ transaction.id }}
@@ -30,7 +31,7 @@
                                     </button>
                                 </RouterLink>
                                 <button class="text-red-500 hover:underline ml-2"
-                                    @click="transactionsStore._deleteTransaction(transaction.id, client?.id)">
+                                    @click="transactionsStore._deleteTransaction(transaction.id)">
                                     Delete
                                 </button>
                             </Flex>
@@ -55,7 +56,8 @@
         <TransactionForm :clients="transactionsStore.clientList" @submit="transactionsStore._addTransaction()"
             :select-disable="selectDisable">
             <Flex class="mt-8">
-                <Button type="submit" width="full" :loading="transactionsStore.newTransaction.loading" :disable="transactionsStore.disableSubmit">Submit</Button>
+                <Button type="submit" width="full" :loading="transactionsStore.newTransaction.loading"
+                    :disable="transactionsStore.disableSubmit">Submit</Button>
             </Flex>
         </TransactionForm>
     </Modal>
@@ -94,9 +96,15 @@ const tableHeaders = ref([
     'id', 'client', 'amount', 'Transaction date'
 ])
 
+// Handle pagination on page change
+const onPageChange = (page: number) => {
+    transactionsStore.pagination.current_page = page;
+    transactionsStore._getPaginateTransactions();
+}
+
 // Load transactions and Client list 
 onMounted(() => {
-    transactionsStore._getPaginateTransactions(props.client?.id);
+    transactionsStore._getPaginateTransactions();
     transactionsStore._getClientList(); // Client list for the new transaction
 
     // For transactions page set client as empty

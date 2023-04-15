@@ -8,7 +8,8 @@
             </Flex>
             <div v-if="!clientStore.loading">
                 <!-- Table -->
-                <DarkTable :table-headers="tableHeaders" :actions="true" v-if="clientStore.clients.length > 0">
+                <DarkTable :table-headers="tableHeaders" :actions="true" v-if="clientStore.clients.length > 0"
+                    :pagination="clientStore.pagination" @on-page-change="(value) => onPageChange(value)">
                     <DarkTableRow v-for="client in clientStore.clients" :key="client.id">
                         <DarkTableCell>{{ client.id }}</DarkTableCell>
                         <DarkTableCell>{{ client.firstName }}</DarkTableCell>
@@ -76,6 +77,12 @@ const clientStore = useClientStore();
 const tableHeaders = ref([
     'id', 'first name', 'last name', 'email', 'avatar'
 ])
+
+// Handle pagination on page change
+const onPageChange = (page: number) => {
+    clientStore.pagination.current_page = page;
+    clientStore._getPaginateClients();
+}
 
 onMounted(() => {
     // Load clients

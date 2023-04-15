@@ -5,6 +5,7 @@ import axiosAuth from "../plugins/axiosAuth";
 import { useToast } from "vue-toastification";
 import { handleValidationErrors, notificationAxiosError } from "../utils/helpers.functions";
 import { ClientForm } from "../types/ClientForm";
+import { Pagination } from "../types/Pagination";
 
 const toast = useToast();
 
@@ -22,6 +23,11 @@ export const useClientStore = defineStore("ClientStore", {
                 loading: false as boolean,
                 isModalOpen: false as boolean
             },
+            pagination: {
+                current_page: 1,
+                last_page: undefined,
+                per_page: undefined
+            } as Pagination,
             clients: [] as Client[],
             loading: false as boolean
         }
@@ -38,10 +44,15 @@ export const useClientStore = defineStore("ClientStore", {
             this.$state.loading = true;
             try {
                 // Fetch clients from API
-                const response: AxiosResponse = await axiosAuth.get('/client');
+                const response: AxiosResponse = await axiosAuth.get(`/client?page=${this.$state.pagination.current_page}`);
                 const { data } = response;
+
                 // Update state with clients data
                 this.$state.clients = data.data;
+                
+                // Update state for pagination
+                const { current_page, last_page, per_page } = data.meta;
+                this.$state.pagination = { current_page, last_page, per_page };
             } catch (error) {
                 // Handle errors silently
                 console.log('Error fetching clients:', error);
