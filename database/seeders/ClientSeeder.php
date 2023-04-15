@@ -18,7 +18,7 @@ class ClientSeeder extends Seeder
         $faker = Faker::create();
     
         // Create 50 clients with faker data
-        for ($i = 0; $i < 25; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             // Generate a new avatar image using Faker and save it to storage
             $imageName = $faker->image(storage_path('app/public/'), 150, 150, 'avatar', false, true);
             // Create a new client with the Faker data and the timestamp-based image filename

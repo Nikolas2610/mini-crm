@@ -17,7 +17,7 @@ class TransactionSeeder extends Seeder
     {
         $clients = Client::all();
 
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 1000; $i++) {
             $client = $clients->random();
 
             Transaction::create([
