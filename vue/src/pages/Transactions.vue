@@ -1,29 +1,29 @@
 <template>
-    <div class="h-full">
+    <div :class="fullHeight ? 'h-full' : ''">
         <Container>
             <!-- Add New -->
             <Flex justify="between" class="mb-4">
                 <SectionTitle>Transactions</SectionTitle>
                 <Button @click="transactionsStore.newTransaction.isModalOpen = true">Add Transaction</Button>
             </Flex>
-            <!-- Table -->
-            <DarkTable :table-headers="tableHeaders" :actions="true" v-if="transactionsStore.transactions.length > 0">
-                <DarkTableRow v-for="transaction in transactionsStore.transactions" :key="transaction.id">
-                    <DarkTableCell>
-                        {{ transaction.id }}
-                    </DarkTableCell>
-                    <DarkTableCell>
-                        {{ transactionsStore.getClientName(transaction.client_id) }}
-                    </DarkTableCell>
-                    <DarkTableCell>
-                        {{ transaction.amount }}
-                    </DarkTableCell>
-                    <DarkTableCell>
-                        {{ formatDate(transaction.created_at) }}
-                    </DarkTableCell>
-                    <DarkTableRow>
+            <div v-if="!transactionsStore.loading">
+                <!-- Table -->
+                <DarkTable :table-headers="tableHeaders" :actions="true" v-if="transactionsStore.transactions.length > 0">
+                    <DarkTableRow v-for="transaction in transactionsStore.transactions" :key="transaction.id">
                         <DarkTableCell>
-                            <Flex justify="end">
+                            {{ transaction.id }}
+                        </DarkTableCell>
+                        <DarkTableCell>
+                            {{ transaction.client.firstName + ' ' + transaction.client.lastName }}
+                        </DarkTableCell>
+                        <DarkTableCell>
+                            {{ transaction.amount }}
+                        </DarkTableCell>
+                        <DarkTableCell>
+                            {{ formatDate(transaction.transaction_date) }}
+                        </DarkTableCell>
+                        <DarkTableCell>
+                            <Flex>
                                 <RouterLink :to="{ name: 'transaction', params: { id: transaction.id } }">
                                     <button class="text-blue-500 hover:underline">
                                         Edit
@@ -36,34 +36,37 @@
                             </Flex>
                         </DarkTableCell>
                     </DarkTableRow>
-                </DarkTableRow>
-            </DarkTable>
+                </DarkTable>
 
-            <Flex v-else class="bg-dark px-8 py-4 rounded-xl italic">
-                No Transactions
-            </Flex>
+                <!-- No transactions message -->
+                <Flex v-else class="bg-dark px-8 py-4 rounded-xl text-white italic">
+                    No Transactions
+                </Flex>
+            </div>
+            <!-- Loading -->
+            <PreLoader v-else />
         </Container>
     </div>
 
+    <!-- Modal new transaction -->
     <Modal :modal-open="transactionsStore.newTransaction.isModalOpen"
         @close-modal="transactionsStore.newTransaction.isModalOpen = false">
         <template v-slot:modal_header>
             Add Transaction
         </template>
-        <TransactionForm :clients="clientStore.clients" @submit="transactionsStore._addTransaction()"
+        <TransactionForm :clients="transactionsStore.clientList" @submit="transactionsStore._addTransaction()"
             :select-disable="selectDisable">
             <Flex class="mt-8">
-                <Button type="submit" width="full">Submit</Button>
+                <Button type="submit" width="full" :loading="transactionsStore.newTransaction.loading" :disable="transactionsStore.disableSubmit">Submit</Button>
             </Flex>
         </TransactionForm>
     </Modal>
 </template>
 
 <script setup lang="ts">
-import { PropType, ref } from 'vue';
+import { PropType, onMounted, ref, watch } from 'vue';
 import { useTransactionStore } from '../stores/TransactionStore';
 import { formatDate } from '../utils/helpers.functions'
-import { useClientStore } from '../stores/ClientStore';
 // Components import
 import DarkTable from '../components/table/DarkTable.vue';
 import DarkTableRow from '../components/table/DarkTableRow.vue';
@@ -74,15 +77,44 @@ import SectionTitle from '../components/ui/SectionTitle.vue';
 import Button from '../components/ui/Button.vue';
 import Modal from '../components/modal/Modal.vue';
 import TransactionForm from '../components/forms/TransactionForm.vue';
+import PreLoader from '../components/PreLoader.vue';
+import { useRoute } from 'vue-router';
 
+// Variables
+const route = useRoute();
 const transactionsStore = useTransactionStore();
-const clientStore = useClientStore();
-
+interface ClientId {
+    id: number | undefined;
+}
 const props = defineProps({
-    selectDisable: { type: Boolean, default: false }
+    selectDisable: { type: Boolean, default: false },
+    client: { type: Object as PropType<ClientId> },
+    fullHeight: { type: Boolean, default: true }
 })
 const tableHeaders = ref([
     'id', 'client', 'amount', 'Transaction date'
 ])
 
+// Load transactions and Client list 
+onMounted(() => {
+    transactionsStore._getPaginateTransactions(props.client?.id);
+    transactionsStore._getClientList(); // Client list for the new transaction
+
+    // For transactions page set client as empty
+    const { name } = route;
+    if (name === 'transactions') {
+        transactionsStore.newTransaction.form.client_id = null;
+    }
+})
+
+// Set default client id for the client page
+watch(() => transactionsStore.newTransaction.form.client_id,
+    (newVal) => {
+        const { name } = route;
+        const { id } = props.client ?? {};
+
+        if (name === 'client' && !newVal && id) {
+            transactionsStore.newTransaction.form.client_id = id;
+        }
+    })
 </script>

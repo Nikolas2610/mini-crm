@@ -1,8 +1,8 @@
 <template>
     <button
         class="flex items-center justify-center rounded-md border border-transparent text-white px-8 py-2 text-base font-medium hover:bg-secondary hover:text-white md:px-10 transition duration-300"
-        :class="[`w-${width}`, `bg-${bgColor}`, disable ? 'cursor-not-allowed' : 'cursor-pointer']" :type="type === 'button' ? 'button' : 'submit'" :disabled="disable">
-        <svg class="animate-spin -ml-1 h-7 w-7 text-white" v-if="loading" xmlns="http://www.w3.org/2000/svg" fill="none"
+        :class="[`w-${width}`, `bg-${bgColor}`, disable ? 'cursor-not-allowed bg-opacity-70' : 'cursor-pointer']" :type="type === 'button' ? 'button' : 'submit'" :disabled="disable">
+        <svg class="animate-spin -ml-1 h-6 w-6 text-white" v-if="loading" xmlns="http://www.w3.org/2000/svg" fill="none"
             viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor"

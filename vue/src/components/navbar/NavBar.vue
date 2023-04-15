@@ -5,15 +5,20 @@
                 <RouterLink :to="{ name: 'home' }">
                     <div class="px-5 py-2">CRM</div>
                 </RouterLink>
-                <Flex :gap="2">
+                <Flex :gap="2" v-if="userStore.isUserLog">
                     <RouterLink :to="{ name: router }" v-for="{ router, name } in navItems"
                         :class="route.name === router ? 'text-primary hover:text-white' : ''">
                         <NavItem>{{ name }}</NavItem>
                     </RouterLink>
+                    <RouterLink :to="{ name: 'users' }" v-if="userStore.isAdmin"
+                        :class="route.name === 'users' ? 'text-primary hover:text-white' : ''">
+                        <NavItem>Users</NavItem>
+                    </RouterLink>
                 </Flex>
-                <RouterLink :to="{ name: 'login' }">
+                <RouterLink :to="{ name: 'login' }" v-if="!userStore.isUserLog">
                     <NavItem class="bg-primary hover:bg-secondary">Login</NavItem>
                 </RouterLink>
+                <NavItem v-else class="bg-primary hover:bg-secondary" @click="userStore._logout()">Logout</NavItem>
             </Flex>
         </div>
     </div>
@@ -24,12 +29,13 @@ import { ref } from 'vue';
 import Flex from '../wrappers/Flex.vue';
 import NavItem from './NavItem.vue';
 import { useRoute } from 'vue-router';
+import { useUserStore } from '../../stores/UserStore';
 
 const route = useRoute()
+const userStore = useUserStore();
 
 const navItems = ref([
-    { id: 1, name: 'Clients', router: 'clients', admin: false },
-    { id: 2, name: 'Transactions', router: 'transactions', admin: false },
-    { id: 3, name: 'Users', router: 'users', admin: true },
+    { id: 1, name: 'Clients', router: 'clients' },
+    { id: 2, name: 'Transactions', router: 'transactions' },
 ])
 </script>

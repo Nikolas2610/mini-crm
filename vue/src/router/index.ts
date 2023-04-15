@@ -6,9 +6,9 @@ const router = createRouter({
         {
             path: '/',
             name: 'home',
-            component: () => import('../pages/Home.vue'),
+            redirect: 'login',
             meta: {
-                title: 'Mini CRM'
+                title: 'Mini CRM',
             }
         },
         {
@@ -16,7 +16,8 @@ const router = createRouter({
             name: 'login',
             component: () => import('../pages/Login.vue'),
             meta: {
-                title: 'Login Page'
+                title: 'Login Page',
+                requiresAuth: false,
             }
         },
         {
@@ -24,7 +25,8 @@ const router = createRouter({
             name: 'clients',
             component: () => import('../pages/Clients.vue'),
             meta: {
-                title: 'Clients'
+                title: 'Clients',
+                requiresAuth: true,
             }
         },
         {
@@ -32,7 +34,8 @@ const router = createRouter({
             name: 'client',
             component: () => import('../pages/Client.vue'),
             meta: {
-                title: 'Client'
+                title: 'Client', 
+                requiresAuth: true,
             }
         },
         {
@@ -40,7 +43,8 @@ const router = createRouter({
             name: 'transactions',
             component: () => import('../pages/Transactions.vue'),
             meta: {
-                title: 'Transactions'
+                title: 'Transactions', 
+                requiresAuth: true,
             }
         },
         {
@@ -48,7 +52,8 @@ const router = createRouter({
             name: 'transaction',
             component: () => import('../pages/Transaction.vue'),
             meta: {
-                title: 'Transaction'
+                title: 'Transaction', 
+                requiresAuth: true,
             }
         },
         {
@@ -56,7 +61,8 @@ const router = createRouter({
             name: 'users',
             component: () => import('../pages/Users.vue'),
             meta: {
-                title: 'Users'
+                title: 'Users', 
+                requiresAuth: true,
             }
         },
         {

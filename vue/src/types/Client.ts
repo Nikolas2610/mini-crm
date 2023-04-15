@@ -3,4 +3,5 @@ export default interface Client {
     firstName: string;
     lastName: string;
     email: string;
+    avatar: string;
 }
