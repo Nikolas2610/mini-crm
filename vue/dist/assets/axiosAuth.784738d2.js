@@ -1,0 +1,1 @@
+import{u as s,W as r}from"./index.f2ff2e63.js";const t=s(),a=r.create({baseURL:"https://backend-crm.psillovits.com/api",headers:{"Content-Type":"application/json"}});a.interceptors.request.use(e=>(e.headers=e.headers||{},e.headers.Authorization=`Bearer ${t.getToken}`,e));export{a};
