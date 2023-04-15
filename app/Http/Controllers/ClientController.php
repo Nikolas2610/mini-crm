@@ -78,7 +78,7 @@ class ClientController extends Controller
      */
     public function transactions(Client $client)
     {
-        $transactions = $client->transactions;
+        $transactions = $client->transactions()->paginate(10);
 
         return TransactionResource::collection($transactions);
     }
