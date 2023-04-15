@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@hennge/vue3-pagination": "^1.0.17",
     "@vuelidate/core": "^2.0.2",
     "@vuelidate/validators": "^2.0.2",
     "@vueuse/core": "^9.13.0",

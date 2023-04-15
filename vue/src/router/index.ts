@@ -7,9 +7,6 @@ const router = createRouter({
             path: '/',
             name: 'home',
             redirect: 'login',
-            meta: {
-                title: 'Mini CRM',
-            }
         },
         {
             path: '/login',

@@ -25,11 +25,23 @@
             </div>
         </div>
     </div>
+    <Flex class="p-2 rounded-lg" v-if="pagination">
+        <v-pagination v-model="pagination.current_page" :pages="pagination.last_page"
+            :range-size="pagination.per_page" active-color="#4E9F3D" @update:modelValue="(value) => $emit('onPageChange', value)" />
+    </Flex>
 </template>
 
 <script setup lang="ts">
+import Flex from '../wrappers/Flex.vue';
+import VPagination from "@hennge/vue3-pagination";
+import "@hennge/vue3-pagination/dist/vue3-pagination.css";
+import { PropType } from 'vue';
+import type { Pagination } from '../../types/Pagination';
+
 const props = defineProps({
     tableHeaders: { type: Array<String>, required: true },
     actions: { type: Boolean, default: false },
+    pagination: {type: Object as PropType<Pagination> }
 })
+const emits = defineEmits(['onPageChange'])
 </script>

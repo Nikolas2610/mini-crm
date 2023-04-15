@@ -17,7 +17,8 @@
 
         <ClientForm @submit="client?.id ? clientStore._updateClient(client.id) : ''" class="mt-10">
             <Flex class="mt-8">
-                <Button :loading="clientStore.newClient.loading" type="submit" width="full" :disable="clientStore.disableSubmit">Update Client</Button>
+                <Button :loading="clientStore.newClient.loading" type="submit" width="full"
+                    :disable="clientStore.disableSubmit">Update Client</Button>
             </Flex>
         </ClientForm>
     </Container>
@@ -29,7 +30,7 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router';
 import { useClientStore } from '../stores/ClientStore';
-import { onBeforeMount, ref } from 'vue';
+import { onBeforeMount, onUnmounted, ref, watch } from 'vue';
 import { useTransactionStore } from '../stores/TransactionStore';
 import type Client from '../types/Client';
 // Components imports
@@ -55,6 +56,21 @@ onBeforeMount(() => {
         router.push({ name: 'clients' })
     }
     // Set the client id for the client edit
+    transactionStore.selectedClientId = client.value?.id ?? null
     transactionStore.newTransaction.form.client_id = client.value?.id ?? null
+    
 })
+
+// Unset the client id for the get transactions
+onUnmounted(() => {
+    transactionStore.selectedClientId = null;
+})
+
+// Update the client id for the add new transaction
+watch(() => transactionStore.newTransaction.form.client_id,
+    (newVal) => {
+        if (!newVal) {
+            transactionStore.newTransaction.form.client_id = transactionStore.selectedClientId;
+        }
+    })
 </script>

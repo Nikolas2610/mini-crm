@@ -8,6 +8,7 @@ import { useToast } from "vue-toastification";
 import { handleValidationErrors } from "../utils/helpers.functions";
 import router from "../router";
 import { TransactionForm } from "../types/TransactionForm";
+import { Pagination } from "../types/Pagination";
 
 const toast = useToast();
 
@@ -23,6 +24,12 @@ export const useTransactionStore = defineStore("TransactionStore", {
                 loading: false as boolean,
                 isModalOpen: false as boolean
             },
+            pagination: {
+                current_page: 1,
+                last_page: undefined,
+                per_page: undefined
+            } as Pagination,
+            selectedClientId: null as number | null, 
             transactions: [] as Transaction[],
             clientList: [] as SelectClient[],
             loading: false as boolean
@@ -35,20 +42,27 @@ export const useTransactionStore = defineStore("TransactionStore", {
         /**
          * Get transactions
          */
-        async _getPaginateTransactions(clientId: number | undefined = undefined) {
+        async _getPaginateTransactions() {
             try {
                 // Set loading state to true
                 this.$state.loading = true;
 
                 // Set URL based on whether or not clientId is defined
                 let url = '';
-                clientId ? url = `/client/${clientId}/transactions` : url = '/transaction'
+                this.$state.selectedClientId
+                    ? url = `/client/${this.$state.selectedClientId}/transactions`
+                    : url = `/transaction`
+                url += `?page=${this.$state.pagination.current_page}`
 
                 // Make GET request to API
                 const response: AxiosResponse = await axiosAuth.get(url);
 
                 // Destructure data from response
                 const { data } = response;
+
+                // Update state for pagination
+                const { current_page, last_page, per_page } = data.meta;
+                this.$state.pagination = { current_page, last_page, per_page };
 
                 // Set transactions state to data from API response
                 this.$state.transactions = data.data;
@@ -145,7 +159,7 @@ export const useTransactionStore = defineStore("TransactionStore", {
         /**
          * Delete transactions
          */
-        async _deleteTransaction(id: number, clientId: number | undefined = undefined) {
+        async _deleteTransaction(id: number) {
             try {
                 // Send delete request to API
                 const response: AxiosResponse = await axiosAuth.delete(`/transaction/${id}`);
@@ -153,7 +167,7 @@ export const useTransactionStore = defineStore("TransactionStore", {
                 // If successful response received, show success message and update transaction list
                 if (response.status === 200) {
                     toast.success("Client deleted successfully");
-                    this._getPaginateTransactions(clientId);
+                    this._getPaginateTransactions();
                 }
             } catch (error: any) {
                 // If there's an error, show error message
