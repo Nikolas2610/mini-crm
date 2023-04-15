@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore } from "pinia";
 import type LoginForm from '../types/LoginForm'
-import { User } from "../types/User";
+import { UserState } from '../types/UserState';
 import axiosClient from "../plugins/axiosClient";
 import { AxiosResponse } from "axios";
 import { useToast } from "vue-toastification";
@@ -25,7 +25,7 @@ export const useUserStore = defineStore("UserStore", {
                 admin: false,
                 email: null,
                 token: null
-            } as User
+            } as UserState
         }
     },
     getters: {

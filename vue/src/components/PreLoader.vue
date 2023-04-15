@@ -1,5 +1,5 @@
 <template>
-    <div class="flex items-center justify-center" style="height: 93.3vh;">
+    <div class="flex items-center justify-center">
         <img :src="loader" alt="loading">
     </div>
 </template>

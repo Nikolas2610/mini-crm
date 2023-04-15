@@ -133,7 +133,7 @@ export const useTransactionStore = defineStore("TransactionStore", {
                 const response: AxiosResponse = await axiosAuth.put(`/transaction/${id}`, { amount, client_id, transaction_date });
 
                 // Redirect to transactions page
-                router.push({ name: 'transactions' });
+                router.back();
             } catch (error: any) {
                 // Show error message
                 toast.error(notificationAxiosError(error));
@@ -145,7 +145,7 @@ export const useTransactionStore = defineStore("TransactionStore", {
         /**
          * Delete transactions
          */
-        async _deleteTransaction(id: number) {
+        async _deleteTransaction(id: number, clientId: number | undefined = undefined) {
             try {
                 // Send delete request to API
                 const response: AxiosResponse = await axiosAuth.delete(`/transaction/${id}`);
@@ -153,7 +153,7 @@ export const useTransactionStore = defineStore("TransactionStore", {
                 // If successful response received, show success message and update transaction list
                 if (response.status === 200) {
                     toast.success("Client deleted successfully");
-                    this._getPaginateTransactions();
+                    this._getPaginateTransactions(clientId);
                 }
             } catch (error: any) {
                 // If there's an error, show error message

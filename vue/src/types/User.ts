@@ -1,7 +1,8 @@
 export interface User {
-    id: number | null;
-    name: string | null;
-    email: string | null;
+    id: number;
+    name: string;
     admin: boolean;
-    token: string | null;
+    email: string;
+    created_at: Date;
+    updated_at: Date;
 }

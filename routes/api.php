@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('transaction', TransactionController::class);
     // Logout User
     Route::post('/logout', [AuthController::class, 'logout']);
+    // Admin - Get users
+    Route::get('/users', [UserController::class, 'index']);
 });
 
 // Login user

@@ -1,5 +1,5 @@
 <template>
-    <td class="py-2 px-6 text-sm font-medium whitespace-nowrap" :class="getClasses()">
+    <td class="py-3 px-6 text-sm font-medium whitespace-nowrap" :class="getClasses()">
         <slot></slot>
     </td>
 </template>

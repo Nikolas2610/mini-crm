@@ -30,7 +30,7 @@
                                     </button>
                                 </RouterLink>
                                 <button class="text-red-500 hover:underline ml-2"
-                                    @click="transactionsStore._deleteTransaction(transaction.id)">
+                                    @click="transactionsStore._deleteTransaction(transaction.id, client?.id)">
                                     Delete
                                 </button>
                             </Flex>
@@ -39,9 +39,7 @@
                 </DarkTable>
 
                 <!-- No transactions message -->
-                <Flex v-else class="bg-dark px-8 py-4 rounded-xl text-white italic">
-                    No Transactions
-                </Flex>
+                <Alert v-else>No transactions</Alert>
             </div>
             <!-- Loading -->
             <PreLoader v-else />
@@ -79,6 +77,7 @@ import Modal from '../components/modal/Modal.vue';
 import TransactionForm from '../components/forms/TransactionForm.vue';
 import PreLoader from '../components/PreLoader.vue';
 import { useRoute } from 'vue-router';
+import Alert from '../components/ui/Alert.vue';
 
 // Variables
 const route = useRoute();

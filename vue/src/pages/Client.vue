@@ -23,7 +23,7 @@
     </Container>
 
     <!-- Load client transactions -->
-    <Transactions :select-disable="true" :client="{ id: client?.id }" />
+    <Transactions :select-disable="true" :client="{ id: client?.id }" :full-height="false" />
 </template>
 
 <script setup lang="ts">

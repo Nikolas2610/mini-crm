@@ -33,9 +33,7 @@
                     </DarkTableRow>
                 </DarkTable>
                 <!-- No clients Message -->
-                <Flex v-else class="bg-dark px-8 py-4 rounded-xl text-white">
-                    No clients
-                </Flex>
+                <Alert v-else>No Clients</Alert>
             </div>
             <!-- Loading component -->
             <PreLoader v-else />
@@ -49,7 +47,8 @@
         </template>
         <ClientForm @submit="clientStore._addClient()">
             <Flex class="mt-8">
-                <Button :loading="clientStore.newClient.loading" type="submit" width="full" :disable="clientStore.disableSubmit">Submit</Button>
+                <Button :loading="clientStore.newClient.loading" type="submit" width="full"
+                    :disable="clientStore.disableSubmit">Submit</Button>
             </Flex>
         </ClientForm>
     </Modal>
@@ -69,6 +68,7 @@ import Button from '../components/ui/Button.vue';
 import ClientForm from '../components/forms/ClientForm.vue';
 import SectionTitle from '../components/ui/SectionTitle.vue'
 import PreLoader from '../components/PreLoader.vue';
+import Alert from '../components/ui/Alert.vue';
 
 const clientStore = useClientStore();
 
