@@ -2,7 +2,7 @@
     <Teleport to="#modal">
         <Transition name="modal">
             <Flex class="bg-dark bg-opacity-90 fixed top-0 left-0 w-full h-full z-20" v-if="modalOpen">
-                <div class="bg-white relative rounded-xl shadow w-2/4" ref="modal">
+                <div class="bg-white relative rounded-xl shadow lg:w-2/4 w-11/12" ref="modal">
                     <Flex justify="between" class="border-b-2 border-gray-500 px-4">
                         <div class="p-4 text-xl">
                             <slot name="modal_header"></slot>

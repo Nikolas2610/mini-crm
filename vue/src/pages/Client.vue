@@ -1,7 +1,7 @@
 <template>
     <Container v-if="client">
-        <Flex justify="between">
-            <div class="border-b-4 border-primary text-3xl pr-8 py-2 text-black">Client, {{ client.firstName }}</div>
+        <Flex justify="between" class="flex-col-reverse md:flex-row md:flex-wrap">
+            <SectionTitle>Client, {{ client.firstName }}</SectionTitle>
             <RouterLink :to="{ name: 'clients' }">
                 <Button bg-color="black">
                     <Flex :gap="1">
@@ -39,6 +39,7 @@ import Flex from '../components/wrappers/Flex.vue';
 import Button from '../components/ui/Button.vue';
 import ClientForm from '../components/forms/ClientForm.vue';
 import Transactions from './Transactions.vue';
+import SectionTitle from '../components/ui/SectionTitle.vue';
 
 // Variables
 const router = useRouter()

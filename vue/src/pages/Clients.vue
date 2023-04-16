@@ -2,7 +2,7 @@
     <div class="h-full">
         <Container>
             <!-- Add New Client -->
-            <Flex justify="between" class="mb-4">
+            <Flex justify="between" class="mb-4 flex-col md:flex-row md:flex-wrap">
                 <SectionTitle>Clients</SectionTitle>
                 <Button @click="clientStore.newClient.isModalOpen = true">Add Client</Button>
             </Flex>

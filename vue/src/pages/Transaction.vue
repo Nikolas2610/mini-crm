@@ -1,7 +1,7 @@
 <template>
     <Container v-if="transaction">
-        <Flex justify="between">
-            <div class="border-b-4 border-primary text-3xl pr-8 py-2 text-black">Transaction, {{ transaction.id }}</div>
+        <Flex justify="between" class="flex-col-reverse md:flex-row md:flex-wrap">
+            <SectionTitle>Transaction, {{ transaction.id }}</SectionTitle>
             <Button bg-color="black" @click="router.back()">
                 <Flex :gap="1">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-5 h-5" viewBox="0 0 16 16">
@@ -32,6 +32,7 @@ import TransactionForm from '../components/forms/TransactionForm.vue';
 import Flex from '../components/wrappers/Flex.vue';
 import Container from '../components/wrappers/Container.vue';
 import Button from '../components/ui/Button.vue';
+import SectionTitle from '../components/ui/SectionTitle.vue';
 
 // Variables
 const router = useRouter()
