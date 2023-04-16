@@ -2,7 +2,7 @@
     <div :class="fullHeight ? 'h-full' : ''">
         <Container>
             <!-- Add New -->
-            <Flex justify="between" class="mb-4">
+            <Flex justify="between" class="mb-4 flex-col md:flex-row md:flex-wrap">
                 <SectionTitle>Transactions</SectionTitle>
                 <Button @click="transactionsStore.newTransaction.isModalOpen = true">Add Transaction</Button>
             </Flex>

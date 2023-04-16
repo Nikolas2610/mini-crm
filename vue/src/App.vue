@@ -21,7 +21,7 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div class="overflow-y-hidden">
+  <div class="overflow-y-hidden overflow-x-hidden">
     <!-- Render the App after check if the is user log -->
     <DefaultLayout v-if="!loading" />
   </div>
