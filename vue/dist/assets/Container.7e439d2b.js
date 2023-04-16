@@ -1,0 +1,1 @@
+import{I as n,a as o,z as s,H as t}from"./index.c7ef58d3.js";const r={},c={class:"container px-4 py-8"};function a(e,_){return o(),s("div",c,[t(e.$slots,"default")])}const l=n(r,[["render",a]]);export{l as C};
