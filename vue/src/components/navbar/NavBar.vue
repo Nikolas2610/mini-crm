@@ -1,5 +1,5 @@
 <template>
-    <div justify="between" class="bg-dark text-white fixed w-full">
+    <div justify="between" class="bg-dark text-white fixed w-full z-10">
         <div class="container py-2">
             <Flex justify="between">
                 <RouterLink :to="{ name: 'home' }">
@@ -16,7 +16,8 @@
                     </RouterLink>
                 </Flex>
                 <!-- Mobile Open Menu -->
-                <Flex class="md:hidden cursor-pointer" @click="isMobileMenuOpen = !isMobileMenuOpen">
+                <Flex class="md:hidden cursor-pointer" @click="isMobileMenuOpen = !isMobileMenuOpen"
+                    v-if="userStore.isUserLog">
                     Menu
                 </Flex>
                 <RouterLink :to="{ name: 'login' }" v-if="!userStore.isUserLog">
@@ -26,11 +27,11 @@
             </Flex>
             <!-- Mobile Main Menu -->
             <div class="py-2 px-5 md:hidden" v-if="isMobileMenuOpen">
-                <RouterLink :to="{ name: router }" v-for="{ router, name } in navItems"
+                <RouterLink :to="{ name: router }" v-for="{ router, name } in navItems" @click="isMobileMenuOpen = false"
                     :class="route.name === router ? 'text-primary hover:text-white' : ''">
                     <NavItem>{{ name }}</NavItem>
                 </RouterLink>
-                <RouterLink :to="{ name: 'users' }" v-if="userStore.isAdmin"
+                <RouterLink :to="{ name: 'users' }" v-if="userStore.isAdmin" @click="isMobileMenuOpen = false"
                     :class="route.name === 'users' ? 'text-primary hover:text-white' : ''">
                     <NavItem>Users</NavItem>
                 </RouterLink>
