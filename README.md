@@ -8,8 +8,9 @@ To install **Mini-CRM**, follow these steps:
 
 ```
 1. Clone the repository to your local machine.
-2. Navigate to the root folder of the Laravel app and run composer install and npm install.
-3. Navigate to the vue/ folder and run npm install.
+2. Navigate to the root folder of the Laravel app and run: composer install and npm install.
+3. Generate storage link: php artisan storage:link
+4. Navigate to the vue/ folder and run: npm install.
 ```
 ***
 ## Environment Variables
@@ -19,6 +20,7 @@ To install **Mini-CRM**, follow these steps:
 The following environment variables need to be set for the Laravel backend:
 
 ```
+- APP_KEY: Generate app key: php artisan key:generate.
 - FRONTEND_URL: The URL of the frontend app.
 - SANCTUM_STATEFUL_DOMAINS: The domain(s) that should be considered stateful by Sanctum. Set to the URL of the frontend app.
 - SESSION_DOMAIN: The domain for storing the session data. Set to the URL of the frontend app.
@@ -72,7 +74,7 @@ npm start
 
 - To build the app, navigate to the **vue/** folder and run:
 ```
-npm run build.
+npm run build
 ```
 ***
 ## Admin Credentials
